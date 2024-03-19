@@ -2,8 +2,6 @@
 
 import argparse
 import pyudev
-import os.path
-
 
 def detect_tty_usb_devices():
     context = pyudev.Context()
@@ -35,6 +33,7 @@ def main():
     args = parser.parse_args()
     data = detect_tty_usb_devices()
     write_to_file(data, args.file, args.name)
+    print("File has been written to {}".format(args.file))
 
 if __name__ == "__main__":
     main()
