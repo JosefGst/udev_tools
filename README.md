@@ -25,4 +25,4 @@ You should have a rules.rules file which can be copied to **/etc/udev/rules.d/**
 
 # TODO
 
-- [ ] 
+- [ ] check if directory exists, otherwise create

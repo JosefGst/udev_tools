@@ -2,6 +2,7 @@
 
 import argparse
 import pyudev
+import signal
 
 def detect_tty_usb_devices():
     context = pyudev.Context()
@@ -26,7 +27,14 @@ def write_to_file(data,file_path, device_name):
             )
     file.write(line)
 
+def handler(signum, frame):
+    res = input("Ctrl-c was pressed. Do you really want to exit? Y/n ")
+    if (res == 'y') or (res == 'Y') or (res == ''):
+        exit(1)
+
+
 def main():
+    signal.signal(signal.SIGINT, handler)
     parser = argparse.ArgumentParser(prog="get_udev",
                                      description="Run the command and plugin the USB device to create the udev rules.",)
     parser.add_argument('name',nargs="?",default="ttyDevice", help='Give a name to your usb device. eg. \"motor\". Default is \"ttyDevice\".')
@@ -37,6 +45,8 @@ def main():
     data = detect_tty_usb_devices()
     write_to_file(data, args.file, args.name)
     print("File has been written to {}".format(args.file))
+
+    
 
 if __name__ == "__main__":
     main()
