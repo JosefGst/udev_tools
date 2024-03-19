@@ -15,10 +15,14 @@ Change the destination file with:
 
 By default the device will be called "ttyDevice". To change it use:
 
-    python udev_tools/get_udev.py -n new_gadget
+    python udev_tools/get_udev.py new_gadget
 
 You should have a rules.rules file which can be copied to **/etc/udev/rules.d/** directory
 
 ## Activate the new rules 
 
     sudo udevadm control --reload-rules && sudo service udev restart && sudo udevadm trigger
+
+# TODO
+
+- [ ] 

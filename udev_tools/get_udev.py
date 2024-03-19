@@ -27,9 +27,12 @@ def write_to_file(data,file_path, device_name):
     file.write(line)
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-n',"--name",default="ttyDevice", help='Give a name to your usb device. eg. \"motor\". Default is \"ttyDevice\".')
+    parser = argparse.ArgumentParser(prog="get_udev",
+                                     description="Run the command and plugin the USB device to create the udev rules.",)
+    parser.add_argument('name',nargs="?",default="ttyDevice", help='Give a name to your usb device. eg. \"motor\". Default is \"ttyDevice\".')
     parser.add_argument('-f',"--file",default="rule.rules", help='Path to the \"rule.rules\" file.')
+    parser.add_argument('-v',"--version", action="version", version="%(prog)s 0.1.0")
+
     args = parser.parse_args()
     data = detect_tty_usb_devices()
     write_to_file(data, args.file, args.name)
