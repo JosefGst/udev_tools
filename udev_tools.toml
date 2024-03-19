@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=64.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "udev_tools"
+version = "0.0.1"
+description = "Tools to easily create udev rools for your USB devices."
+readme = "README.md"
+authors = [{ name = "Tin & Josef", email = "info@realpython.com" }]
+
+[project.scripts]
+hello_cli = "scripts.get_udev:main"
