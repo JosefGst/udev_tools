@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=64.0.0", "wheel"]
+requires = ["setuptools>=64.0.0", "wheel", "pyudev", "signal"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -10,4 +10,4 @@ readme = "README.md"
 authors = [{ name = "Tin & Josef", email = "info@realpython.com" }]
 
 [project.scripts]
-hello_cli = "scripts.get_udev:main"
+hello_cli = "udev_tools.get_udev:main"
