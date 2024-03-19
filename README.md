@@ -2,20 +2,24 @@
 
 Helps to make udev rules.
 
+## Install 
+
+    pip3 install .
+
 ## Usage
 
 From inside the repository main directory run
 
-    python udev_tools/get_udev.py
+    get_udev
 
 The program will stop and wait for you to plugin the usb device. After the device got plugged in it automatically recognize it and create a rules.rules file.
 Change the destination file with:
 
-    python udev_tools/get_udev.py -f my.rules
+    get_udev -f my.rules
 
 By default the device will be called "ttyDevice". To change it use:
 
-    python udev_tools/get_udev.py new_gadget
+    get_udev new_gadget
 
 You should have a rules.rules file which can be copied to **/etc/udev/rules.d/** directory
 
