@@ -50,4 +50,5 @@ You should have a rules.rules file which can be copied to **/etc/udev/rules.d/**
 - [ ] add unit tests
 - [ ] save output directly in /etc/udev/rules.d/ directory (is sudo permitted)
 - [ ] pip3 install udev_tools git+https://github.com/JosefGst/udev_tools not working
+- [ ] github actions
 - [ ] (optional) check if directory exists, otherwise create
