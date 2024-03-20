@@ -3,7 +3,10 @@
 Helps to make udev rules.
 
 ## Install 
+### With pip
+    pip3 install udev_tools git+https://github.com/JosefGst/udev_tools@cli
 
+### From source
     git clone git@github.com:JosefGst/udev_tools.git
     cd udev_tools
     pip3 install .
