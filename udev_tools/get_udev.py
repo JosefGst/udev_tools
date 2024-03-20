@@ -20,16 +20,13 @@ def detect_tty_usb_devices():
                 vendor_id = device.get("ID_VENDOR_ID", "")
                 product_id = device.get("ID_MODEL_ID", "")
                 # print(f"Found device: {udev_info} {kernel_info} {vendor_id}:{product_id}")
-                return (udev_info, kernel_info, vendor_id, product_id)
+                return (udev_info, vendor_id, product_id, kernel_info)
     return None
 
 
-def write_to_file(data, file_path, device_name):
+def write_to_file(line, file_path):
     file = open(file_path, "a")
-    line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", KERNELS=="{}", SYMLINK+="{}"\n'.format(
-        data[0].rstrip(data[0][-1]), data[1], data[2], data[3], device_name
-    )
-    file.write(line)
+    file.write(line + "\n")
 
 
 def handler(signum, frame):
@@ -51,14 +48,21 @@ def main():
         help='Give a name to your usb device. eg. "motor". Default is "ttyDevice".',
     )
     parser.add_argument(
-        "-f", "--file", default="rule.rules", help='Path to the "rule.rules" file.'
+        "-o", "--output", type=str, help='Outputs to the specified file path eg."my.rules".'
     )
-    parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.0.1")
+    parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1.0")
 
     args = parser.parse_args()
+
     data = detect_tty_usb_devices()
-    write_to_file(data, args.file, args.name)
-    print("File has been written to {}".format(args.file))
+    line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", KERNELS=="{}", SYMLINK+="{}"'.format(
+        data[0].rstrip(data[0][-1]), data[1], data[2], data[3], args.name
+    )
+    print(line)
+
+    if args.output:
+        write_to_file(line, args.output)
+        print("File has been written to {}".format(args.output))
 
 
 if __name__ == "__main__":
