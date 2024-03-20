@@ -4,7 +4,7 @@ Helps to make udev rules.
 
 ## Install 
 ### With pip
-    pip3 install udev_tools git+https://github.com/JosefGst/udev_tools@cli
+    pip3 install udev_tools git+https://github.com/JosefGst/udev_tools
 
 ### From source
     git clone git@github.com:JosefGst/udev_tools.git
