@@ -8,7 +8,7 @@ import signal
 def detect_tty_usb_devices():
     context = pyudev.Context()
     monitor = pyudev.Monitor.from_netlink(context)
-    print("Please plugin your USB device...")
+    # print("Please plugin your USB device...")
 
     for device in iter(monitor.poll, None):
         if device.subsystem == "tty" and (
@@ -29,14 +29,14 @@ def write_to_file(line, file_path):
     file.write(line + "\n")
 
 
-def handler(signum, frame):
+def ctrlc_handler(signum, frame):
     res = input("Ctrl-c was pressed. Do you really want to exit? Y/n ")
     if (res == "y") or (res == "Y") or (res == ""):
         exit(1)
 
 
 def main():
-    signal.signal(signal.SIGINT, handler)
+    signal.signal(signal.SIGINT, ctrlc_handler)
     parser = argparse.ArgumentParser(
         prog="get_udev",
         description="Run the command and plugin the USB device to create the udev rules.",
@@ -45,19 +45,27 @@ def main():
         "name",
         nargs="?",
         default="ttyDevice",
-        help='Give a name to your usb device. eg. "motor". Default is "ttyDevice".',
+        help='Name the usb device. eg. "motor". Default is "ttyDevice".',
     )
     parser.add_argument(
         "-o", "--output", type=str, help='Outputs to the specified file path eg."my.rules".'
+    )
+    parser.add_argument(
+        "-k", "--kernels", action="store_true", help='Include the KERNELS information, so the rule applies only on the specified port.'
     )
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1.0")
 
     args = parser.parse_args()
 
     data = detect_tty_usb_devices()
-    line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", KERNELS=="{}", SYMLINK+="{}"'.format(
+    if args.kernels:
+        line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", KERNELS=="{}", SYMLINK+="{}"'.format(
         data[0].rstrip(data[0][-1]), data[1], data[2], data[3], args.name
-    )
+        )
+    else:
+        line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", SYMLINK+="{}"'.format(
+            data[0].rstrip(data[0][-1]), data[1], data[2], args.name
+        )
     print(line)
 
     if args.output:
