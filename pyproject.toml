@@ -6,7 +6,6 @@ build-backend = "setuptools.build_meta"
 name = "udev_tools"
 version = "0.1.0"
 dependencies = [
-    "udev_tools@git+https://github.com/JosefGst/udev_tools",
     "pyudev",
 ]
 
