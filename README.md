@@ -3,8 +3,8 @@
 Create udev rules with a simple command line.
 
 ## Install 
-### With pip
-    pip3 install udev_tools git+https://github.com/JosefGst/udev_tools
+<!-- ### With pip
+    pip3 install udev_tools git+https://github.com/JosefGst/udev_tools -->
 
 ### From source
     git clone git@github.com:JosefGst/udev_tools.git
@@ -49,4 +49,5 @@ You should have a rules.rules file which can be copied to **/etc/udev/rules.d/**
 
 - [ ] add unit tests
 - [ ] save output directly in /etc/udev/rules.d/ directory (is sudo permitted)
+- [ ] pip3 install udev_tools git+https://github.com/JosefGst/udev_tools not working
 - [ ] (optional) check if directory exists, otherwise create
