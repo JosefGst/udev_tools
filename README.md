@@ -1,21 +1,43 @@
 # UDEV Tools
 
-Helps to make udev rules.
+Create udev rules with a simple command line.
+
+## Install 
+### With pip
+    pip3 install udev_tools git+https://github.com/JosefGst/udev_tools
+
+### From source
+    git clone git@github.com:JosefGst/udev_tools.git
+    cd udev_tools
+    pip3 install .
 
 ## Usage
+### Minimal example
 
-From inside the repository main directory run
+    get_udev
 
-    python udev_tools/get_udev.py
+The program will stop and wait for you to plugin the usb device. After the device got plugged in it automatically recognize it and displays the udev rules. 
 
-The program will stop and wait for you to plugin the usb device. After the device got plugged in it automatically recognize it and create a rules.rules file.
-Change the destination file with:
-
-    python udev_tools/get_udev.py -f my.rules
-
+---
 By default the device will be called "ttyDevice". To change it use:
 
-    python udev_tools/get_udev.py new_gadget
+    get_udev new_gadget
+
+To inlcude the KERNELS information sot he rule applies only on the specified prot run:
+
+    get_udev -k
+
+To write to a file use the --output flag followed with the path to the file. The rule will be appended to it.
+
+    get_udev -o my.rules
+
+Or simply pipe the output
+
+    get_udev >> my.rules
+
+### Full example:
+
+    get_udev my_gadget -k -o my.rules
 
 You should have a rules.rules file which can be copied to **/etc/udev/rules.d/** directory
 
@@ -25,4 +47,6 @@ You should have a rules.rules file which can be copied to **/etc/udev/rules.d/**
 
 # TODO
 
-- [ ] 
+- [ ] add unit tests
+- [ ] save output directly in /etc/udev/rules.d/ directory (is sudo permitted)
+- [ ] (optional) check if directory exists, otherwise create
