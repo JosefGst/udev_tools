@@ -5,6 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "udev_tools"
 version = "0.1.0"
+dependencies = [
+    "pyudev",
+]
+
 description = "Tools to easily create udev rools for your USB devices."
 readme = "README.md"
 authors = [{ name = "Tin & Josef", email = "info@realpython.com" }]
