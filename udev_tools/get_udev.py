@@ -8,7 +8,7 @@ import signal
 def detect_tty_usb_devices():
     context = pyudev.Context()
     monitor = pyudev.Monitor.from_netlink(context)
-    # print("Please plugin your USB device...")
+    print("Please plugin the USB device...")
 
     for device in iter(monitor.poll, None):
         if device.subsystem == "tty" and (
@@ -34,6 +34,17 @@ def ctrlc_handler(signum, frame):
     if (res == "y") or (res == "Y") or (res == ""):
         exit(1)
 
+def create_rule(data, arg_kernel, arg_name):
+    if arg_kernel:
+        line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", KERNELS=="{}", SYMLINK+="{}"'.format(
+        data[0].rstrip(data[0][-1]), data[1], data[2], data[3], arg_name
+        )
+    else:
+        line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", SYMLINK+="{}"'.format(
+            data[0].rstrip(data[0][-1]), data[1], data[2], arg_name
+        )
+    print(line)
+    return line
 
 def main():
     signal.signal(signal.SIGINT, ctrlc_handler)
@@ -58,15 +69,7 @@ def main():
     args = parser.parse_args()
 
     data = detect_tty_usb_devices()
-    if args.kernels:
-        line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", KERNELS=="{}", SYMLINK+="{}"'.format(
-        data[0].rstrip(data[0][-1]), data[1], data[2], data[3], args.name
-        )
-    else:
-        line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", SYMLINK+="{}"'.format(
-            data[0].rstrip(data[0][-1]), data[1], data[2], args.name
-        )
-    print(line)
+    line = create_rule(data, args.kernels, args.name)
 
     if args.output:
         write_to_file(line, args.output)

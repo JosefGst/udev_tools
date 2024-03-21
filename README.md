@@ -31,10 +31,6 @@ To write to a file use the --output flag followed with the path to the file. The
 
     get_udev -o my.rules
 
-Or simply pipe the output
-
-    get_udev >> my.rules
-
 ### Full example:
 
     get_udev my_gadget -k -o my.rules
@@ -44,6 +40,10 @@ You should have a rules.rules file which can be copied to **/etc/udev/rules.d/**
 ## Activate the new rules 
 
     sudo udevadm control --reload-rules && sudo service udev restart && sudo udevadm trigger
+
+## Run Tests
+
+    python3 -m nose2 -v
 
 # TODO
 
