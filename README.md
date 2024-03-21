@@ -2,16 +2,19 @@
 
 Create udev rules with a simple command line.
 
-## Install 
+## Install
+
 <!-- ### With pip
     pip3 install udev_tools git+https://github.com/JosefGst/udev_tools -->
 
 ### From source
+
     git clone https://github.com/JosefGst/udev_tools.git
     cd udev_tools
     pip3 install .
 
 ## Usage
+
 ### Minimal example
 
     get_udev
@@ -31,13 +34,13 @@ To write to a file use the --output flag followed with the path to the file. The
 
     get_udev -o my.rules
 
-### Full example:
+### Full example
 
     get_udev my_gadget -k -o my.rules
 
 You should have a rules.rules file which can be copied to **/etc/udev/rules.d/** directory
 
-## Activate the new rules 
+## Activate the new rules
 
     sudo udevadm control --reload-rules && sudo service udev restart && sudo udevadm trigger
 
@@ -45,7 +48,7 @@ You should have a rules.rules file which can be copied to **/etc/udev/rules.d/**
 
     python3 -m nose2 -v
 
-# TODO
+## TODO
 
 - [ ] add unit tests
 - [ ] save output directly in /etc/udev/rules.d/ directory (is sudo permitted)
