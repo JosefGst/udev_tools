@@ -46,8 +46,7 @@ def create_rule(data, arg_kernel, arg_name):
     print(line)
     return line
 
-def main():
-    signal.signal(signal.SIGINT, ctrlc_handler)
+def init_cli():
     parser = argparse.ArgumentParser(
         prog="get_udev",
         description="Run the command and plugin the USB device to create the udev rules.",
@@ -66,7 +65,11 @@ def main():
     )
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1.0")
 
-    args = parser.parse_args()
+    return parser.parse_args()
+
+def main():
+    signal.signal(signal.SIGINT, ctrlc_handler)
+    args = init_cli()
 
     data = detect_tty_usb_devices()
     line = create_rule(data, args.kernels, args.name)

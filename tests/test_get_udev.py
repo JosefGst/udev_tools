@@ -25,10 +25,10 @@ class TestCreateRule(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_create_rule_name_default(self):
-        data = ["ttyUSB0", "1234", "5678", "1-1.2"]
+        data = ["ttyACM0", "1234", "5678", "1-1.2"]
         arg_kernel = False
         arg_name = None
-        expected = 'KERNEL=="ttyUSB*", ATTRS{idVendor}=="1234", ATTRS{idProduct}=="5678", SYMLINK+="None"'
+        expected = 'KERNEL=="ttyACM*", ATTRS{idVendor}=="1234", ATTRS{idProduct}=="5678", SYMLINK+="None"'
 
         result = create_rule(data, arg_kernel, arg_name)
 
