@@ -3,12 +3,13 @@
 import argparse
 import pyudev
 import signal
+import sys
 
 
 def detect_tty_usb_devices():
     context = pyudev.Context()
     monitor = pyudev.Monitor.from_netlink(context)
-    # print("Please plugin your USB device...")
+    print("Please plugin the USB device...")
 
     for device in iter(monitor.poll, None):
         if device.subsystem == "tty" and (
@@ -35,8 +36,20 @@ def ctrlc_handler(signum, frame):
         exit(1)
 
 
-def main():
-    signal.signal(signal.SIGINT, ctrlc_handler)
+def create_rule(data, arg_kernel, arg_name):
+    if arg_kernel:
+        line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", KERNELS=="{}", SYMLINK+="{}"'.format(
+            data[0].rstrip(data[0][-1]), data[1], data[2], data[3], arg_name
+        )
+    else:
+        line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", SYMLINK+="{}"'.format(
+            data[0].rstrip(data[0][-1]), data[1], data[2], arg_name
+        )
+    print(line)
+    return line
+
+
+def init_cli(args):
     parser = argparse.ArgumentParser(
         prog="get_udev",
         description="Run the command and plugin the USB device to create the udev rules.",
@@ -48,25 +61,28 @@ def main():
         help='Name the usb device. eg. "motor". Default is "ttyDevice".',
     )
     parser.add_argument(
-        "-o", "--output", type=str, help='Outputs to the specified file path eg."my.rules".'
+        "-o",
+        "--output",
+        type=str,
+        help='Outputs to the specified file path eg."my.rules".',
     )
     parser.add_argument(
-        "-k", "--kernels", action="store_true", help='Include the KERNELS information, so the rule applies only on the specified port.'
+        "-k",
+        "--kernels",
+        action="store_true",
+        help="Include the KERNELS information, so the rule applies only on the specified port.",
     )
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1.0")
 
-    args = parser.parse_args()
+    return parser.parse_args(args)
+
+
+def main():
+    signal.signal(signal.SIGINT, ctrlc_handler)
+    args = init_cli(sys.argv[1:])
 
     data = detect_tty_usb_devices()
-    if args.kernels:
-        line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", KERNELS=="{}", SYMLINK+="{}"'.format(
-        data[0].rstrip(data[0][-1]), data[1], data[2], data[3], args.name
-        )
-    else:
-        line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", SYMLINK+="{}"'.format(
-            data[0].rstrip(data[0][-1]), data[1], data[2], args.name
-        )
-    print(line)
+    line = create_rule(data, args.kernels, args.name)
 
     if args.output:
         write_to_file(line, args.output)
