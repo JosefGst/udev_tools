@@ -3,7 +3,6 @@ from udev_tools.get_udev import init_cli
 
 
 class TestInitCli(unittest.TestCase):
-
     def test_default_name(self):
         args = init_cli("")
         self.assertEqual(args.name, "ttyDevice")

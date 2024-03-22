@@ -3,7 +3,6 @@ from udev_tools.get_udev import create_rule
 
 
 class TestCreateRule(unittest.TestCase):
-
     def test_create_rule_without_kernel(self):
         data = ["ttyUSB0", "1234", "5678", "1-1.2"]
         arg_kernel = False
