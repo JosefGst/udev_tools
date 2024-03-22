@@ -35,10 +35,11 @@ def ctrlc_handler(signum, frame):
     if (res == "y") or (res == "Y") or (res == ""):
         exit(1)
 
+
 def create_rule(data, arg_kernel, arg_name):
     if arg_kernel:
         line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", KERNELS=="{}", SYMLINK+="{}"'.format(
-        data[0].rstrip(data[0][-1]), data[1], data[2], data[3], arg_name
+            data[0].rstrip(data[0][-1]), data[1], data[2], data[3], arg_name
         )
     else:
         line = 'KERNEL=="{}*", ATTRS{{idVendor}}=="{}", ATTRS{{idProduct}}=="{}", SYMLINK+="{}"'.format(
@@ -46,6 +47,7 @@ def create_rule(data, arg_kernel, arg_name):
         )
     print(line)
     return line
+
 
 def init_cli(args):
     parser = argparse.ArgumentParser(
@@ -59,14 +61,21 @@ def init_cli(args):
         help='Name the usb device. eg. "motor". Default is "ttyDevice".',
     )
     parser.add_argument(
-        "-o", "--output", type=str, help='Outputs to the specified file path eg."my.rules".'
+        "-o",
+        "--output",
+        type=str,
+        help='Outputs to the specified file path eg."my.rules".',
     )
     parser.add_argument(
-        "-k", "--kernels", action="store_true", help='Include the KERNELS information, so the rule applies only on the specified port.'
+        "-k",
+        "--kernels",
+        action="store_true",
+        help="Include the KERNELS information, so the rule applies only on the specified port.",
     )
     parser.add_argument("-v", "--version", action="version", version="%(prog)s 0.1.0")
 
     return parser.parse_args(args)
+
 
 def main():
     signal.signal(signal.SIGINT, ctrlc_handler)
