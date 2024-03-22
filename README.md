@@ -26,7 +26,7 @@ By default the device will be called "ttyDevice". To change it use:
 
     get_udev new_gadget
 
-To inlcude the KERNELS information sot he rule applies only on the specified prot run:
+To include the KERNELS information sot he rule applies only on the specified prot run:
 
     get_udev -k
 
